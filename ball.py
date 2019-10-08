@@ -30,11 +30,7 @@ while True:
 
 		if e.type == KEYDOWN:
 			if e.key == K_UP: speedsled[1] = -10
-			if y > 480:
-				y = 480
 			if e.key == K_DOWN: speedsled[1] = 10
-			if y < 0:
-				y = 0
 		if e.type == KEYUP:
 			if e.key == K_UP or e.key == K_DOWN: speedsled[1] = 0
 
@@ -49,7 +45,18 @@ while True:
 	if ballrect.top < 0 or ballrect.bottom > height:
 		speedball[1] = -speedball[1]
 
+	# чтобы платформа не уходила за экран
+	if sledrect.top < 0:
+		sledrect.top = 0
+	elif sledrect.bottom > height:
+		sledrect.bottom = height
+
+	# мяч коснулся левой границы экрана - конец игры
+	if ballrect.left <= 0:
+		print('Вы проиграли!')
+		break 
 	screen.fill(BGCOLOR)
+
 	screen.blit(ball, ballrect)
 	screen.blit(sled, sledrect)
 	pg.display.update()
